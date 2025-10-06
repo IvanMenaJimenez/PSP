@@ -1,0 +1,3 @@
+lengua 7
+mates 2
+historia 9
