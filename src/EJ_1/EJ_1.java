@@ -23,14 +23,15 @@ public class EJ_1 {
 
         String lineas;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file)); ObjectOutputStream serializar = new ObjectOutputStream(new FileOutputStream("D:\\Users\\ivan.menjim\\Documents\\NetBeansProjects\\DesarrolloServiciosYProcesos\\notasAlumnos"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file)); ObjectOutputStream serializar = new ObjectOutputStream(new FileOutputStream("notasAlumnos"))) {
 
             while ((lineas = reader.readLine()) != null) {
                 notasAlumno.add(Double.parseDouble(lineas.split(" ")[1]));
             }
 
-            serializar.writeObject((new Alumno(file.getName(), MediaArray(notasAlumno))));
-            serializar.flush();
+            Alumno a = new Alumno(file.getName(), MediaArray(notasAlumno));
+            serializar.writeObject(a);
+          
         } catch (IOException e) {
             System.out.println(e);
         }
