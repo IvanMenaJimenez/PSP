@@ -1,37 +1,38 @@
 package EJ_1;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EJ_1 {
 
-    static void MediaArray(ArrayList notas) {
+    static double MediaArray(ArrayList notas) {
         double media = 0;
 
         for (int i = 0; i < notas.size(); i++) {
             media += (double) notas.get(i);
         }
-
         System.out.println(media / notas.size());
+        return (media / notas.size());
     }
 
     static void MediaAlumno(File file) {
         ArrayList notasAlumno = new ArrayList();
+
         String lineas;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file)); ObjectOutputStream serializar = new ObjectOutputStream(new FileOutputStream("D:\\Users\\ivan.menjim\\Documents\\NetBeansProjects\\DesarrolloServiciosYProcesos\\notasAlumnos"))) {
 
             while ((lineas = reader.readLine()) != null) {
                 notasAlumno.add(Double.parseDouble(lineas.split(" ")[1]));
             }
 
-            MediaArray(notasAlumno);
+            serializar.writeObject((new Alumno(file.getName(), MediaArray(notasAlumno))));
+            serializar.flush();
         } catch (IOException e) {
+            System.out.println(e);
         }
 
     }
@@ -77,14 +78,14 @@ public class EJ_1 {
 
         for (int i = 0; i < subdirectoria.length; i++) {
             File archivo = new File(subdirectoria[i] + "\\notas.txt");
-            
+
             System.out.println(subdirectoria[i].getName());
             MediaAlumno(archivo);
-            
+
             mapa.putAll(Asignaturas(archivo));
 
         }
-        System.out.println("---------------------------------");        
+        System.out.println("---------------------------------");
         MediaAsignaturas(mapa);
     }
 }
